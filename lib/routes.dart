@@ -1,5 +1,8 @@
 //import 'dart:js';
+
+
 import 'package:flutter/widgets.dart';
+import 'package:shop_app/models/wishlist.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_app/screens/complete_profile_buyer/complete_profile_buyer_screen.dart';
@@ -15,6 +18,7 @@ import 'package:shop_app/screens/sing_up_buyer/sign_up_buyer_screen.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
 import 'package:shop_app/screens/sign_up/sign_up_screen.dart';
 import 'package:shop_app/screens/sign_up_seller/sign_up_seller_screen.dart';
+import 'package:shop_app/screens/wishlist/wishlist.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
@@ -33,5 +37,6 @@ final Map<String, WidgetBuilder> routes = {
   SignUpSellerScreen.routeName: (context) => SignUpSellerScreen(),
   CompleteProfileBuyerScreen.routeName: (context) => CompleteProfileBuyerScreen(),
   CompleteProfileSellerScreen.routeName: (context) => CompleteProfileSellerScreen(),
+  WishlistScreen.routeName: (context) => WishlistScreen(),
 
 };
