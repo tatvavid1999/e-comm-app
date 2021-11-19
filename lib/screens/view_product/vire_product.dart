@@ -9,8 +9,9 @@ class View_Product extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Your Products',style: TextStyle(color: Colors.black)),),
       body: Body(),
-      bottomNavigationBar: CustomBottomNavBarSeller(selectedMenu: MenuState.home),
+      bottomNavigationBar: CustomBottomNavBarSeller(selectedMenu: MenuState.favourite),
     );
   }
 }
