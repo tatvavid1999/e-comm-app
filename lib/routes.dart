@@ -1,5 +1,3 @@
-//import 'dart:js';
-
 
 
 import 'package:flutter/widgets.dart';
@@ -23,6 +21,7 @@ import 'package:shop_app/screens/sign_up_seller/sign_up_seller_screen.dart';
 import 'package:shop_app/screens/wishlist/wishlist.dart';
 import 'package:shop_app/screens/add_product/add_product.dart';
 import 'package:shop_app/screens/view_product/vire_product.dart';
+import 'package:shop_app/screens/add_image/add_image.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
@@ -44,6 +43,7 @@ final Map<String, WidgetBuilder> routes = {
   WishlistScreen.routeName: (context) => WishlistScreen(),
   Aad_Product.routeName: (context) => Aad_Product(),
   View_Product.routeName: (context) => View_Product(),
+  AddImage.routeName: (context) => AddImage(),
 
 
 };
