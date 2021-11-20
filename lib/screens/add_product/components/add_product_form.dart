@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
+import 'package:shop_app/screens/add_image/add_image.dart';
 import 'package:shop_app/screens/add_product/add_product.dart';
 
 import '../../../constants.dart';
@@ -39,76 +41,86 @@ class _AddProductForm extends State<AddProductForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildFirstNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildLastNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPhoneNumberFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Text('Image add field here'),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Container(height:65,width:470,margin:EdgeInsets.all(5),decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.black38,
-                style: BorderStyle.solid,
-              ),
-              borderRadius: BorderRadius.circular(80)
-          ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            buildFirstNameFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            buildLastNameFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            buildPhoneNumberFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            FloatingActionButton.extended(
+              onPressed: (){
+                Navigator.of(context).pushNamed(AddImage.routeName);
+              },
+              label: const Text('Add Images'),
+              icon: const Icon(Icons.add_a_photo_outlined),
+              backgroundColor: kPrimaryColor,
+            ),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            Container(height:65,width:470,margin:EdgeInsets.all(5),decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.black38,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(80)
+            ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Center(
-                    child: DropdownButton(hint: Text('Please choose a Category'),
-                      value: selectedCategory,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedCategory = newValue as String?;
-                        });
-                      },
-                      items: category.map((category){
-                        return DropdownMenuItem(
-                          child: new Text(category),value: category,
-                        );
-                      }).toList(),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.black38,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0),
+                    child: Center(
+                      child: DropdownButton(hint: Text('Please choose a Category'),
+                        value: selectedCategory,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedCategory = newValue as String?;
+                          });
+                        },
+                        items: category.map((category){
+                          return DropdownMenuItem(
+                            child: new Text(category),value: category,
+                          );
+                        }).toList(),
+                        underline: Container(
+                          height: 1,
+                          color: Colors.black38,
+                        ),
+                        //icon: Icon(Icons.arrow_drop_down_circle_outlined),
+
                       ),
-                      //icon: Icon(Icons.arrow_drop_down_circle_outlined),
-
                     ),
                   ),
-                ),
-                Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.black26,size: 30,),
-                Padding(padding: EdgeInsets.only(right: 2)),
+                  Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.black26,size: 30,),
+                  Padding(padding: EdgeInsets.only(right: 2)),
 
 
-              ],
+                ],
+              ),
             ),
-          ),
 
 
 
 
-          //FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
-          DefaultButton(
-            text: "continue",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                Navigator.pushNamed(context, Aad_Product.routeName);
-              }
-            },
-          ),
-        ],
+            //FormError(errors: errors),
+            SizedBox(height: getProportionateScreenHeight(40)),
+            DefaultButton(
+              text: "Add this product",
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.pushNamed(context, Aad_Product.routeName);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
