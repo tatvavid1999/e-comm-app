@@ -81,6 +81,7 @@ class _SignFormState extends State<SignForm> {
               }
               else {
                 print('Signed in');
+                print(result);
               }
 
 

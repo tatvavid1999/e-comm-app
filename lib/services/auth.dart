@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_app/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //create user onject
-
+  UserModel? _userFirebase(User user){
+    return user != null ? UserModel(name: user.displayName.toString()): null;
+  }
 
 
   //sign in anon
@@ -12,7 +15,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
-      return user;
+      return _userFirebase(user!);
     }catch(e){
       print(e.toString());
       return null;
