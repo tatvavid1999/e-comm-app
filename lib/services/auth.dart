@@ -20,7 +20,10 @@ class AuthService {
       print(e.toString());
       return null;
     }
-
+}
+//stream
+  Stream<UserModel?> get user {
+    return _auth.authStateChanges().map((User? user) => _userFirebase(user!));
   }
 
 
