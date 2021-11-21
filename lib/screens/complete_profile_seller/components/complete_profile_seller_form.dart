@@ -21,7 +21,7 @@ class _CompleteProfileSellerFormState extends State<CompleteProfileSellerForm> {
   String? lastName;
   String? phoneNumber;
   String? address;
-  List<String> category =['Electronics','Groceries','Sports','Fashion','Books',];
+  //List<String> category =['Electronics','Groceries','Sports','Fashion','Books',];
   String? selectedCategory;
 
   void addError({String? error}) {
@@ -51,48 +51,48 @@ class _CompleteProfileSellerFormState extends State<CompleteProfileSellerForm> {
           buildPhoneNumberFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           //buildAddressFormField(),
-          Container(height:65,width:470,margin:EdgeInsets.all(5),decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.black38,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(80)
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-
-              Padding(
-                padding: const EdgeInsets.only(left: 18.0),
-                child: Center(
-                child: DropdownButton(hint: Text('Please choose a Category'),
-                  value: selectedCategory,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedCategory = newValue as String?;
-                    });
-                  },
-                  items: category.map((category){
-                    return DropdownMenuItem(
-                      child: new Text(category),value: category,
-                    );
-                  }).toList(),
-                  underline: Container(
-                    height: 1,
-                    color: Colors.black38,
-                  ),
-                  //icon: Icon(Icons.arrow_drop_down_circle_outlined),
-
-                ),
-            ),
-              ),
-            Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.black26,size: 30,),
-            Padding(padding: EdgeInsets.only(right: 2))
-
-          ],
-          ),
-          ),
+          // Container(height:65,width:470,margin:EdgeInsets.all(5),decoration: BoxDecoration(
+          //   color: Colors.white,
+          //   border: Border.all(
+          //     color: Colors.black38,
+          //     style: BorderStyle.solid,
+          //   ),
+          //   borderRadius: BorderRadius.circular(80)
+          // ),
+          // child: Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // children: [
+          //
+          //     Padding(
+          //       padding: const EdgeInsets.only(left: 18.0),
+          //       child: Center(
+          //       child: DropdownButton(hint: Text('Please choose a Category'),
+          //         value: selectedCategory,
+          //         onChanged: (newValue) {
+          //           setState(() {
+          //             selectedCategory = newValue as String?;
+          //           });
+          //         },
+          //         items: category.map((category){
+          //           return DropdownMenuItem(
+          //             child: new Text(category),value: category,
+          //           );
+          //         }).toList(),
+          //         underline: Container(
+          //           height: 1,
+          //           color: Colors.black38,
+          //         ),
+          //         //icon: Icon(Icons.arrow_drop_down_circle_outlined),
+          //
+          //       ),
+          //   ),
+          //     ),
+          //   Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.black26,size: 30,),
+          //   Padding(padding: EdgeInsets.only(right: 2))
+          //
+          // ],
+          // ),
+          // ),
 
 
 

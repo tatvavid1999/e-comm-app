@@ -1,5 +1,7 @@
 
 
+
+
 import 'package:flutter/widgets.dart';
 import 'package:shop_app/models/wishlist.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
@@ -11,6 +13,7 @@ import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/login_success/login_success_screen.dart';
 import 'package:shop_app/screens/otp/otp_screen.dart';
+import 'package:shop_app/screens/payments_page/payments_page.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
@@ -22,6 +25,7 @@ import 'package:shop_app/screens/wishlist/wishlist.dart';
 import 'package:shop_app/screens/add_product/add_product.dart';
 import 'package:shop_app/screens/view_product/vire_product.dart';
 import 'package:shop_app/screens/add_image/add_image.dart';
+
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
@@ -44,6 +48,7 @@ final Map<String, WidgetBuilder> routes = {
   Aad_Product.routeName: (context) => Aad_Product(),
   View_Product.routeName: (context) => View_Product(),
   AddImage.routeName: (context) => AddImage(),
+  PaymentsPage.routeName: (context) => PaymentsPage(),
 
 
 };
