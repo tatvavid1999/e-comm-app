@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                 Text("Register as Seller", style: headingStyle),
                 Text(
-                  "Register as Seller and\nsell weed. We don't care.",
+                  "Register as Seller and\nsell your products online.",
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
