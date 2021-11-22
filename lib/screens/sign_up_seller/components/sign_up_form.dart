@@ -3,6 +3,7 @@ import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/screens/add_product/add_product.dart';
+import 'package:shop_app/services/auth.dart';
 //import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 //import 'package:shop_app/screens/complete_profile_seller/complete_profile_screen.dart';
 
@@ -16,6 +17,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
@@ -63,11 +65,18 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, AddProduct.routeName);
+
+                dynamic result = await _authService.registerNewUser(email!, password!);
+                if(result==null){
+                  print('Error');
+                }else {
+                  Navigator.pushNamed(context, Aad_Product.routeName);
+                }
+
               }
             },
           ),
@@ -87,6 +96,7 @@ class _SignUpFormState extends State<SignUpForm> {
           removeError(error: kMatchPassError);
         }
         conform_password = value;
+
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -120,7 +130,9 @@ class _SignUpFormState extends State<SignUpForm> {
           removeError(error: kShortPassError);
         }
         password = value;
+        setState(() => password = value);
       },
+
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
@@ -152,7 +164,7 @@ class _SignUpFormState extends State<SignUpForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        return null;
+        setState(() => email = value);
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -182,7 +194,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
         }
-        return null;
+        setState(() => phoneNumber = value);
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -230,7 +242,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kNamelNullError);
           return "";
         }
-        return null;
+        setState(() => firstName = value);
       },
       decoration: InputDecoration(
         labelText: "Name",
