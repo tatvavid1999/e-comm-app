@@ -3,9 +3,7 @@
 
 
 import 'package:flutter/widgets.dart';
-import 'package:shop_app/models/wishlist.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
-import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_app/screens/complete_profile_buyer/complete_profile_buyer_screen.dart';
 import 'package:shop_app/screens/complete_profile_seller/complete_profile_screen.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
