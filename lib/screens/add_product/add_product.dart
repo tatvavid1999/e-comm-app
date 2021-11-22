@@ -4,7 +4,7 @@ import 'package:shop_app/enums.dart';
 
 import 'components/body.dart';
 
-class Aad_Product extends StatelessWidget {
+class AddProduct extends StatelessWidget {
   static String routeName = "/add_product";
   @override
   Widget build(BuildContext context) {

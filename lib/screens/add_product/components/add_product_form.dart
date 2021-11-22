@@ -115,7 +115,7 @@ class _AddProductForm extends State<AddProductForm> {
               text: "Add this product",
               press: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, Aad_Product.routeName);
+                  Navigator.pushNamed(context, AddProduct.routeName);
                 }
               },
             ),

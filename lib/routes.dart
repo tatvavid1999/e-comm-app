@@ -3,9 +3,7 @@
 
 
 import 'package:flutter/widgets.dart';
-import 'package:shop_app/models/wishlist.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
-import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
@@ -41,7 +39,7 @@ final Map<String, WidgetBuilder> routes = {
   SignUpBuyerScreen.routeName: (context) => SignUpBuyerScreen(),
   SignUpSellerScreen.routeName: (context) => SignUpSellerScreen(),
   WishlistScreen.routeName: (context) => WishlistScreen(),
-  Aad_Product.routeName: (context) => Aad_Product(),
+  AddProduct.routeName: (context) => AddProduct(),
   View_Product.routeName: (context) => View_Product(),
   AddImage.routeName: (context) => AddImage(),
   PaymentsPage.routeName: (context) => PaymentsPage(),

@@ -51,7 +51,7 @@ class CustomBottomNavBarSeller extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, Aad_Product.routeName),
+                    Navigator.pushNamed(context, AddProduct.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/myproduct.svg"),

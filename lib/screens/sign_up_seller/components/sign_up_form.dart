@@ -69,12 +69,14 @@ class _SignUpFormState extends State<SignUpForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
+
                 dynamic result = await _authService.registerNewUser(email!, password!);
                 if(result==null){
                   print('Error');
                 }else {
                   Navigator.pushNamed(context, Aad_Product.routeName);
                 }
+
               }
             },
           ),
