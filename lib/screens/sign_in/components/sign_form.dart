@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
+import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/login_success/login_success_screen.dart';
 import 'package:shop_app/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -17,10 +20,12 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-  final AuthService _auth = AuthService();
+  final _auth = FirebaseAuth.instance;
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
+  // String email='';
+  // String password='';
   bool? remember = false;
   final List<String?> errors = [];
 
@@ -37,6 +42,7 @@ class _SignFormState extends State<SignForm> {
         errors.remove(error);
       });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,23 +82,24 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Continue",
             press: () async {
-              dynamic result = await _auth.signInAnon();
-              if (result==null){
-                print('Error Signing In ');
-              }
-              else {
-                print('Signed in');
-                print(result);
-              }
+              signIn(emailController.text, passwordController.text);
+              // dynamic result = await _auth.signInAnon();
+              // if (result==null){
+              //   print('Error Signing In ');
+              // }
+              // else {
+              //   print('Signed in');
+              //   print(result);
+              // }
 
 
 
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-              }
+              // if (_formKey.currentState!.validate()) {
+              //   _formKey.currentState!.save();
+              //   // if all are valid then go to success screen
+              //   KeyboardUtil.hideKeyboard(context);
+              //   Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+              //}
             },
           ),
         ],
@@ -103,7 +110,10 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      onSaved: (value) {
+        emailController.text = value!;
+      },
+      controller: passwordController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
@@ -136,7 +146,10 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      onSaved: (value) {
+        passwordController.text = value!;
+      },
+      controller: emailController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
@@ -164,5 +177,22 @@ class _SignFormState extends State<SignForm> {
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
+  }
+  void signIn(String email, String password) async{
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      await _auth.signInWithEmailAndPassword(email: email, password: password)
+      .then((uid) => {
+        print('form validated'),
+        Fluttertoast.showToast(msg: 'Login Successful'),
+        Navigator.pushNamed(context, HomeScreen.routeName)
+      });
+
+      // if all are valid then go to success screen
+      // KeyboardUtil.hideKeyboard(context);
+      // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+    }
+
   }
 }
