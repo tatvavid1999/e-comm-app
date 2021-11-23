@@ -7,6 +7,7 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/models/user_model.dart';
 import 'package:shop_app/screens/add_product/add_product.dart';
+import 'package:shop_app/screens/login_success/login_success_screen.dart';
 import 'package:shop_app/services/auth.dart';
 //import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 //import 'package:shop_app/screens/complete_profile_seller/complete_profile_screen.dart';
@@ -299,6 +300,7 @@ class _SignUpFormState extends State<SignUpForm> {
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
     Navigator.pushNamed(context, AddProduct.routeName);
+
 
   }
 
