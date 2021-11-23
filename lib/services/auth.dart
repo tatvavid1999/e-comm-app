@@ -5,10 +5,11 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //create user onject
-  UserModel? _userFirebase(User user){
-    return user != null ? UserModel(name: user.displayName.toString()): null;
+  UserModel? _userFirebase(User user) {
+    return user != null ? UserModel(name: user.displayName.toString()) : null;
   }
 
+  // auth cahnge user stream
 
   //sign in anon
   Future signInAnon() async {
@@ -16,21 +17,21 @@ class AuthService {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
       return _userFirebase(user!);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
-}
+  }
+
 //stream
   Stream<UserModel?> get user {
     return _auth.authStateChanges().map((User? user) => _userFirebase(user!));
   }
 
-
 //sign in email
 
-
 //register new
+
   Future registerNewUser(String email , String password) async {
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -44,5 +45,16 @@ class AuthService {
   }
 
 
+  
+
+
 //signout
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
