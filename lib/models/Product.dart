@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Product {
@@ -11,7 +12,7 @@ class Product {
   Product({
     required this.id,
     required this.images,
-    required this.colors,
+    this.colors = Colors.accents,
     this.rating = 0.0,
     this.isFavourite = false,
     this.isPopular = false,
@@ -19,7 +20,29 @@ class Product {
     required this.price,
     required this.description,
   });
+
+  factory Product.fromMap(map) {
+    return Product(
+        id: map['id'],
+        images: map['images'],
+        title: map['title'],
+        price: map['price'],
+        description: map['descripton']);
+  }
+
+  //sending data to server
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'images': images,
+      'title': title,
+      'price': price,
+      'description': description,
+    };
+  }
 }
+
+// data from server
 
 // Our demo Products
 

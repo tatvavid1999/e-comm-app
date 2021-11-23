@@ -74,7 +74,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 if(result==null){
                   print('Error');
                 }else {
-                  Navigator.pushNamed(context, Aad_Product.routeName);
+                  Navigator.pushNamed(context, AddProduct.routeName);
                 }
 
               }
