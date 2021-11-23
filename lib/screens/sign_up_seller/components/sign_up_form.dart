@@ -297,7 +297,7 @@ class _SignUpFormState extends State<SignUpForm> {
         .doc(user.uid)
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
-    Navigator.pushNamed(context, Aad_Product.routeName);
+    Navigator.pushNamed(context, AddProduct.routeName);
 
   }
 
