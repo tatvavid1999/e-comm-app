@@ -187,13 +187,12 @@ class _SignFormState extends State<SignForm> {
       .then((uid) => {
         print('form validated'),
         Fluttertoast.showToast(msg: 'Login Successful'),
+        Navigator.pushNamed(context, LoginSuccessScreen.routeName)
 
-        Navigator.pushNamed(context, HomeScreen.routeName)
+        //Navigator.pushNamed(context, HomeScreen.routeName)
       });
 
-      // if all are valid then go to success screen
-      // KeyboardUtil.hideKeyboard(context);
-      // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+
     }
 
   }
