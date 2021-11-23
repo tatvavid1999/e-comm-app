@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
+import 'package:shop_app/models/user_model.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 
@@ -19,12 +23,14 @@ class SignUpBuyer extends StatefulWidget {
 
 class _SignUpBuyerState extends State<SignUpBuyer> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
-  String? conform_password;
-  String? firstName;
-  String? lastName;
-  String? phoneNumber;
+  final _authService = FirebaseAuth.instance;
+
+  final firstNameEditingController = new TextEditingController();
+  final phoneNumberEditingController = new TextEditingController();
+  final emailEditingController = new TextEditingController();
+  final passwordEditingController = new TextEditingController();
+  final confirmPasswordEditingController = new TextEditingController();
+  final String type = 'buyer';
   bool remember = false;
   final List<String?> errors = [];
 
@@ -65,11 +71,8 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
           DefaultButton(
             text: "Continue",
             press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, HomeScreen.routeName);
-              }
+              signUp(emailEditingController.text, passwordEditingController.text);
+
             },
           ),
         ],
@@ -77,10 +80,125 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
     );
   }
 
+  TextFormField buildConformPassFormField() {
+    return TextFormField(
+      obscureText: true,
+      controller: confirmPasswordEditingController,
+      onSaved: (value) {
+        confirmPasswordEditingController.text = value!;
+      },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.isNotEmpty && passwordEditingController.text ==
+            confirmPasswordEditingController.text) {
+          removeError(error: kMatchPassError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if ((passwordEditingController.text != value)) {
+          addError(error: kMatchPassError);
+          return "";
+        }
+        confirmPasswordEditingController.text = value;
+      },
+      decoration: InputDecoration(
+        labelText: "Confirm Password",
+        hintText: "Re-enter your password",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildPasswordFormField() {
+    return TextFormField(
+      obscureText: true,
+      controller: passwordEditingController,
+      onSaved: (value) {
+        passwordEditingController.text = value!;
+      },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length >= 8) {
+          removeError(error: kShortPassError);
+        }
+
+        return null;
+      },
+
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
+          return "";
+        }
+        setState(() => passwordEditingController.text = value);
+      },
+      decoration: InputDecoration(
+        labelText: "Password",
+        hintText: "Enter your password",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildEmailFormField() {
+    return TextFormField(
+      //keyboardType: TextInputType.emailAddress,
+      autofocus: false,
+      controller: emailEditingController,
+      onSaved: (value) {
+        emailEditingController.text = value!;
+      },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidEmailError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kEmailNullError);
+          return "";
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidEmailError);
+          return "";
+        }
+        setState(() => emailEditingController.text = value);
+      },
+      decoration: InputDecoration(
+        labelText: "Email",
+        hintText: "Enter your email",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+      ),
+    );
+  }
+
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      onSaved: (newValue) => phoneNumber = newValue,
+      controller: phoneNumberEditingController,
+      onSaved: (value) {
+        phoneNumberEditingController.text = value!;
+      },
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
@@ -92,7 +210,7 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
           addError(error: kPhoneNumberNullError);
           return "";
         }
-        return null;
+        setState(() => phoneNumberEditingController.text = value);
       },
       decoration: InputDecoration(
         labelText: "Phone Number",
@@ -104,24 +222,12 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
       ),
     );
   }
-
-  TextFormField buildLastNameFormField() {
-    return TextFormField(
-      onSaved: (newValue) => lastName = newValue,
-      decoration: InputDecoration(
-        labelText: "Last Name",
-        hintText: "Enter your last name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-      ),
-    );
-  }
-
   TextFormField buildFirstNameFormField() {
     return TextFormField(
-      onSaved: (newValue) => firstName = newValue,
+      controller: firstNameEditingController,
+      onSaved: (value) {
+        firstNameEditingController.text = value!;
+      },
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
@@ -133,7 +239,7 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
           addError(error: kNamelNullError);
           return "";
         }
-        return null;
+        setState(() => firstNameEditingController.text = value);
       },
       decoration: InputDecoration(
         labelText: "Name",
@@ -146,102 +252,36 @@ class _SignUpBuyerState extends State<SignUpBuyer> {
     );
   }
 
-    TextFormField buildConformPassFormField() {
-      return TextFormField(
-        obscureText: true,
-        onSaved: (newValue) => conform_password = newValue,
-        onChanged: (value) {
-          if (value.isNotEmpty) {
-            removeError(error: kPassNullError);
-          } else if (value.isNotEmpty && password == conform_password) {
-            removeError(error: kMatchPassError);
-          }
-          conform_password = value;
-        },
-        validator: (value) {
-          if (value!.isEmpty) {
-            addError(error: kPassNullError);
-            return "";
-          } else if ((password != value)) {
-            addError(error: kMatchPassError);
-            return "";
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-          labelText: "Confirm Password",
-          hintText: "Re-enter your password",
-          // If  you are using latest version of flutter then lable text and hint text shown like this
-          // if you r using flutter less then 1.20.* then maybe this is not working properly
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        ),
-      );
-    }
+  void signUp(String email, String password) async {
 
-    TextFormField buildPasswordFormField() {
-      return TextFormField(
-        obscureText: true,
-        onSaved: (newValue) => password = newValue,
-        onChanged: (value) {
-          if (value.isNotEmpty) {
-            removeError(error: kPassNullError);
-          } else if (value.length >= 8) {
-            removeError(error: kShortPassError);
-          }
-          password = value;
-        },
-        validator: (value) {
-          if (value!.isEmpty) {
-            addError(error: kPassNullError);
-            return "";
-          } else if (value.length < 8) {
-            addError(error: kShortPassError);
-            return "";
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-          labelText: "Password",
-          hintText: "Enter your password",
-          // If  you are using latest version of flutter then lable text and hint text shown like this
-          // if you r using flutter less then 1.20.* then maybe this is not working properly
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-        ),
-      );
-    }
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      await _authService.createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+        postDetailstoFirestore()
+      });
 
-    TextFormField buildEmailFormField() {
-      return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        onSaved: (newValue) => email = newValue,
-        onChanged: (value) {
-          if (value.isNotEmpty) {
-            removeError(error: kEmailNullError);
-          } else if (emailValidatorRegExp.hasMatch(value)) {
-            removeError(error: kInvalidEmailError);
-          }
-          return null;
-        },
-        validator: (value) {
-          if (value!.isEmpty) {
-            addError(error: kEmailNullError);
-            return "";
-          } else if (!emailValidatorRegExp.hasMatch(value)) {
-            addError(error: kInvalidEmailError);
-            return "";
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-          labelText: "Email",
-          hintText: "Enter your email",
-          // If  you are using latest version of flutter then lable text and hint text shown like this
-          // if you r using flutter less then 1.20.* then maybe this is not working properly
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
-        ),
-      );
+
     }
+  }
+  postDetailstoFirestore() async{
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _authService.currentUser;
+    UserModel userModel = UserModel();
+    // writing all the values
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    userModel.name = firstNameEditingController.text;
+    userModel.phoneNumber = phoneNumberEditingController.text;
+    userModel.type = 'buyer';
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully :) ");
+    Navigator.pushNamed(context, HomeScreen.routeName);
+
+  }
+
   }
